@@ -57,6 +57,11 @@ kotlin {
             //voyager
             implementation(libs.voyager.navigator)
             implementation(libs.voyager.screenmodel)
+            //coil
+            implementation(libs.coil.compose.core)
+            implementation(libs.coil.compose)
+            implementation(libs.coil.mp)
+            implementation(libs.coil.network.ktor)
 
             implementation(libs.kotlinx.serialization)
         }

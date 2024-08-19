@@ -21,21 +21,18 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
-import org.koin.core.context.startKoin
-import org.koin.dsl.KoinAppDeclaration
+import org.koin.core.KoinApplication
 import org.koin.dsl.module
 
-fun initializeKoin(appDeclaration: KoinAppDeclaration = {}) =
-    startKoin {
-        appDeclaration()
-        modules(
-            provideHttpClientModule,
-            viewModelsModule,
-            repositoriesModule,
-            useCasesModule,
-            dataSourceModule
-        )
-    }
+fun KoinApplication.init(){
+    modules(
+        provideHttpClientModule,
+        viewModelsModule,
+        repositoriesModule,
+        useCasesModule,
+        dataSourceModule
+    )
+}
 
 val useCasesModule = module {
     factory { LoginUseCase(get()) }

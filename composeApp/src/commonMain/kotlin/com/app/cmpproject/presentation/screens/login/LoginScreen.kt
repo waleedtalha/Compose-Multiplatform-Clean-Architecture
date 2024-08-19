@@ -35,7 +35,7 @@ import com.app.cmpproject.presentation.components.AppScaffold
 import com.app.cmpproject.presentation.screens.users.AllUsersScreen
 import kotlinx.coroutines.launch
 
-object LoginScreen :Screen{
+object LoginScreen : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.current
@@ -106,26 +106,26 @@ object LoginScreen :Screen{
                     }
                     when (loginState) {
                         is LoginScreenState.Loading -> {
-                            if ((loginState as LoginScreenState.Loading).isLoading) {
                                 ProgressIndicator()
-                            }
                         }
+                        is LoginScreenState.Idle->{}
 
                         is LoginScreenState.Success -> {
-                            navigator?.push(AllUsersScreen)
-                            println((loginState as LoginScreenState.Success).data.email)
+                            navigator?.replace(AllUsersScreen)
                         }
 
                         is LoginScreenState.Error -> {
                             coroutineScope.launch {
-                                val errorMessage = (loginState as LoginScreenState.Error).errorMessage.split("\n").firstOrNull()
+                                val errorMessage =
+                                    (loginState as LoginScreenState.Error).errorMessage.split("\n")
+                                        .firstOrNull()
                                 snackbarHostState.showSnackbar(
-                                    message = errorMessage?:"",
+                                    message = errorMessage ?: "",
                                     duration = SnackbarDuration.Short,
                                     actionLabel = "Dismiss"
                                 )
                             }
-                            println((loginState as LoginScreenState.Error).errorMessage)
+                            viewModel.resetState()
                         }
                     }
                 }

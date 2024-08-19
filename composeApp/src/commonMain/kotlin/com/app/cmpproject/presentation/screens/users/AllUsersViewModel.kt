@@ -15,7 +15,7 @@ class AllUsersViewModel(
     private val allUsersUseCase: AllUsersUseCase
 ) : ViewModel {
 
-    private val _state = MutableStateFlow<AllUsersScreenState>(AllUsersScreenState.Loading(false))
+    private val _state = MutableStateFlow<AllUsersScreenState>(AllUsersScreenState.Idle)
     var state = _state.asStateFlow()
 
     fun showAllUsers() {
@@ -24,7 +24,7 @@ class AllUsersViewModel(
                 when (response.status) {
                     ApiStatus.LOADING -> {
                         _state.update {
-                            AllUsersScreenState.Loading(true)
+                            AllUsersScreenState.Loading
                         }
                     }
 

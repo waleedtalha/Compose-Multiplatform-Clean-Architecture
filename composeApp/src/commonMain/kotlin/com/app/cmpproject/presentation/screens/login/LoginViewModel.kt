@@ -22,7 +22,7 @@ class LoginViewModel(
     var userNameInput by mutableStateOf(LoginValidation("emilys"))
     var passwordInput by mutableStateOf(LoginValidation("emilyspass"))
 
-    private val _state = MutableStateFlow<LoginScreenState>(LoginScreenState.Loading(false))
+    private val _state = MutableStateFlow<LoginScreenState>(LoginScreenState.Idle)
     var state = _state.asStateFlow()
 
     fun loginUser(username: String, pass: String) {
@@ -39,7 +39,7 @@ class LoginViewModel(
                 when (response.status) {
                     ApiStatus.LOADING -> {
                         _state.update {
-                            LoginScreenState.Loading(true)
+                            LoginScreenState.Loading
                         }
                     }
 
@@ -65,4 +65,11 @@ class LoginViewModel(
             }
         }
     }
+
+    fun resetState(){
+        _state.update {
+            LoginScreenState.Idle
+        }
+    }
+
 }
