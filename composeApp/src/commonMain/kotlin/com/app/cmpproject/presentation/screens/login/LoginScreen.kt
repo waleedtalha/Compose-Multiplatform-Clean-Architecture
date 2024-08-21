@@ -30,16 +30,21 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import com.app.cmpproject.core.viewModel
-import com.app.cmpproject.presentation.components.ProgressIndicator
 import com.app.cmpproject.presentation.components.AppScaffold
+import com.app.cmpproject.presentation.components.ProgressIndicator
 import com.app.cmpproject.presentation.screens.users.AllUsersScreen
 import kotlinx.coroutines.launch
 
 object LoginScreen : Screen {
     @Composable
     override fun Content() {
-        val navigator = LocalNavigator.current
         val viewModel: LoginViewModel = viewModel()
+        MainContent(viewModel)
+    }
+
+    @Composable
+    fun MainContent(viewModel: LoginViewModel) {
+        val navigator = LocalNavigator.current
         val loginState by viewModel.state.collectAsState()
         val snackbarHostState = remember { SnackbarHostState() }
         val coroutineScope = rememberCoroutineScope()
@@ -53,8 +58,10 @@ object LoginScreen : Screen {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "Enter your details", style = MaterialTheme.typography.bodyLarge,
-                        fontSize = 22.sp, fontWeight = FontWeight.Bold
+                        text = "Enter your Login Details",
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold
                     )
 
                     Spacer(modifier = Modifier.height(116.dp))
@@ -79,7 +86,7 @@ object LoginScreen : Screen {
                         isError = viewModel.passwordInput.isError
                     )
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(70.dp))
 
                     Button(onClick = {
                         if (viewModel.userNameInput.isError || viewModel.passwordInput.isError) {
@@ -101,14 +108,15 @@ object LoginScreen : Screen {
                                 viewModel.passwordInput.input.trim()
                             )
                         }
-                    }, modifier = Modifier.fillMaxWidth()) {
+                    }, modifier = Modifier.padding(16.dp).fillMaxWidth()) {
                         Text(text = "Submit")
                     }
                     when (loginState) {
                         is LoginScreenState.Loading -> {
-                                ProgressIndicator()
+                            ProgressIndicator()
                         }
-                        is LoginScreenState.Idle->{}
+
+                        is LoginScreenState.Idle -> {}
 
                         is LoginScreenState.Success -> {
                             navigator?.replace(AllUsersScreen)
@@ -132,64 +140,64 @@ object LoginScreen : Screen {
             }
         )
     }
-}
 
-@Composable
-fun UsernameTextField(
-    viewModel: LoginViewModel,
-    value: String,
-    onValueChange: (String) -> Unit,
-    isError: Boolean
-) {
-    OutlinedTextField(
-        value = value,
-        onValueChange = { text ->
-            onValueChange(text)
-            if (isError && text.isNotEmpty()) {
-                viewModel.userNameInput = viewModel.userNameInput.copy(
-                    isError = false,
-                    errorText = ""
-                )
-            }
-        },
-        label = { Text(text = "Username") },
-        isError = isError,
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxWidth(),
-        keyboardOptions = KeyboardOptions.Default.copy(
-            imeAction = ImeAction.Next,
-            keyboardType = KeyboardType.Text
+    @Composable
+    fun UsernameTextField(
+        viewModel: LoginViewModel,
+        value: String,
+        onValueChange: (String) -> Unit,
+        isError: Boolean
+    ) {
+        OutlinedTextField(
+            value = value,
+            onValueChange = { text ->
+                onValueChange(text)
+                if (isError && text.isNotEmpty()) {
+                    viewModel.userNameInput = viewModel.userNameInput.copy(
+                        isError = false,
+                        errorText = ""
+                    )
+                }
+            },
+            label = { Text(text = "Username") },
+            isError = isError,
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            keyboardOptions = KeyboardOptions.Default.copy(
+                imeAction = ImeAction.Next,
+                keyboardType = KeyboardType.Text
+            )
         )
-    )
-}
+    }
 
-@Composable
-fun PasswordTextField(
-    viewModel: LoginViewModel,
-    value: String,
-    onValueChange: (String) -> Unit,
-    isError: Boolean
-) {
-    OutlinedTextField(
-        value = value,
-        onValueChange = { text ->
-            onValueChange(text)
-            if (isError && text.isNotEmpty()) {
-                viewModel.passwordInput = viewModel.passwordInput.copy(
-                    isError = false,
-                    errorText = ""
-                )
-            }
-        },
-        label = { Text(text = "Password") },
-        isError = isError,
-        keyboardOptions = KeyboardOptions.Default.copy(
-            imeAction = ImeAction.Done,
-            keyboardType = KeyboardType.Text
-        ),
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxWidth()
-    )
+    @Composable
+    fun PasswordTextField(
+        viewModel: LoginViewModel,
+        value: String,
+        onValueChange: (String) -> Unit,
+        isError: Boolean
+    ) {
+        OutlinedTextField(
+            value = value,
+            onValueChange = { text ->
+                onValueChange(text)
+                if (isError && text.isNotEmpty()) {
+                    viewModel.passwordInput = viewModel.passwordInput.copy(
+                        isError = false,
+                        errorText = ""
+                    )
+                }
+            },
+            label = { Text(text = "Password") },
+            isError = isError,
+            keyboardOptions = KeyboardOptions.Default.copy(
+                imeAction = ImeAction.Done,
+                keyboardType = KeyboardType.Text
+            ),
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth()
+        )
+    }
 }
