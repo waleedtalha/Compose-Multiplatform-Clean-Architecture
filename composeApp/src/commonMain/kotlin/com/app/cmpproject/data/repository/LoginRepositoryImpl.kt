@@ -7,6 +7,9 @@ import com.app.cmpproject.domain.repository.LoginRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
+/**
+ * Repository class for fetching data[LoginResponse] from server
+ * */
 class LoginRepositoryImpl(private val remoteDataSource: RemoteDataSource) : LoginRepository {
     override suspend fun loginUser(
         username: String,
