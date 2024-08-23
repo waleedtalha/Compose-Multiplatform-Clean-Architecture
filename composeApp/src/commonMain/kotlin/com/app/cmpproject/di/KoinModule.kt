@@ -1,4 +1,4 @@
-package com.app.cmpproject.data.di
+package com.app.cmpproject.di
 
 import com.app.cmpproject.data.remote.RemoteDataSourceImpl
 import com.app.cmpproject.data.remote.RemoteDataSource
